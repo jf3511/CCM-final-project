@@ -1,4 +1,5 @@
 import pygame
+import os
 from ple import PLE
 from ple.games.pixelcopter import Pixelcopter
 
