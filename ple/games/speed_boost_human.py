@@ -305,7 +305,6 @@ class Pixelcopter(PyGameWrapper):
         
         for block in hits:
             self.lives -=1
-            self.score -=5
 
         for b in self.block_group:
             if b.pos.x <= self.player.pos.x and len(self.block_group) == 1:

@@ -1,6 +1,6 @@
 import pygame
 from ple import PLE
-from ple.games.speed_boost_RL import Pixelcopter
+from ple.games.speed_boost_human import Pixelcopter
 
 # Initialize Pygame and set up the window
 pygame.init()
