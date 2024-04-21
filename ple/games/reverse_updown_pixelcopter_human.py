@@ -53,7 +53,7 @@ class HelicopterPlayer(pygame.sprite.Sprite):
         self.pos = vec2d(pos_init)
         self.speed = speed
         self.climb_speed = speed * -0.09  # -0.0175
-        self.fall_speed = speed * 0.35  # 0.0019
+        self.fall_speed = speed * 0.30 # 0.0019
         self.momentum = 0
 
         self.width = SCREEN_WIDTH * 0.05
@@ -277,6 +277,7 @@ class Pixelcopter(PyGameWrapper):
         self.screen.fill((0, 0, 0))
         self._handle_player_events()
 
+        self.score += self.rewards["tick"]
 
         self.player.update(self.is_falling, dt)
         self.block_group.update(dt)
@@ -284,14 +285,21 @@ class Pixelcopter(PyGameWrapper):
 
         hits = pygame.sprite.spritecollide(
             self.player, self.block_group, False)
-        
-        for block in hits:
-            self.lives -=1
-            self.score -=5
+        for creep in hits:
+            self.lives -= 1
+
+        hits = pygame.sprite.spritecollide(
+            self.player, self.terrain_group, False)
+        for t in hits:
+            if self.player.pos.y - self.player.height <= t.pos.y - self.height * 0.25:
+                self.lives -= 1
+
+            if self.player.pos.y >= t.pos.y + self.height * 0.25:
+                self.lives -= 1
 
         for b in self.block_group:
             if b.pos.x <= self.player.pos.x and len(self.block_group) == 1:
-                self.score += 1
+                self.score += self.rewards["positive"]
                 self._add_blocks()
 
             if b.pos.x <= -b.width:
@@ -299,6 +307,7 @@ class Pixelcopter(PyGameWrapper):
 
         for t in self.terrain_group:
             if t.pos.x <= -t.width:
+                self.score += self.rewards["positive"]
                 t.kill()
 
         if self.player.pos.y < self.height * 0.125:  # its above
@@ -312,10 +321,14 @@ class Pixelcopter(PyGameWrapper):
             self._add_terrain(self.width, self.width * 5)
 
         if self.lives <= 0.0:
+            self.score += self.rewards["loss"]
+        
+        if self.lives <= 0.0:
 
             final_score_text = self.font.render(f'Final Score: {self.score}', True, (255, 255, 255))
             text_rect = final_score_text.get_rect(center=(self.width//2, self.height//2))
             self.screen.blit(final_score_text, text_rect)
+
 
         self.player_group.draw(self.screen)
         self.block_group.draw(self.screen)

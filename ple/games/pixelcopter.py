@@ -52,7 +52,7 @@ class HelicopterPlayer(pygame.sprite.Sprite):
         pos_init = (int(SCREEN_WIDTH * 0.35), SCREEN_HEIGHT / 2)
         self.pos = vec2d(pos_init)
         self.speed = speed
-        self.climb_speed = speed * -0.875  # -0.0175
+        self.climb_speed = speed * -0.3  # -0.0175
         self.fall_speed = speed * 0.09  # 0.0019
         self.momentum = 0
 
@@ -143,13 +143,8 @@ class Pixelcopter(PyGameWrapper):
 
         self.is_climbing = False
         self.speed = 0.0004 * width
-        self.rewards = {
-            "positive": 1.0,  # For example, passing an obstacle
-            "negative": -2.0, # Hitting an obstacle
-            "tick": 0.1,      # Living for another frame
-            "loss": 0.0,     # Losing the game
-            "win": 0.0        # Winning the game, if there's a win condition
-        }
+        pygame.font.init()
+        self.font = pygame.font.SysFont('Arial', 24)
 
     def _handle_player_events(self):
         self.is_climbing = False
@@ -328,6 +323,12 @@ class Pixelcopter(PyGameWrapper):
 
         if self.lives <= 0.0:
             self.score += self.rewards["loss"]
+        
+        if self.lives <= 0.0:
+
+            final_score_text = self.font.render(f'Final Score: {self.score}', True, (255, 255, 255))
+            text_rect = final_score_text.get_rect(center=(self.width//2, self.height//2))
+            self.screen.blit(final_score_text, text_rect)
 
         self.player_group.draw(self.screen)
         self.block_group.draw(self.screen)
