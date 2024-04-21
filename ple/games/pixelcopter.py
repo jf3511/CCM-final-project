@@ -52,7 +52,7 @@ class HelicopterPlayer(pygame.sprite.Sprite):
         pos_init = (int(SCREEN_WIDTH * 0.35), SCREEN_HEIGHT / 2)
         self.pos = vec2d(pos_init)
         self.speed = speed
-        self.climb_speed = speed * -0.35  # -0.0175
+        self.climb_speed = speed * -0.875  # -0.0175
         self.fall_speed = speed * 0.09  # 0.0019
         self.momentum = 0
 
@@ -143,7 +143,13 @@ class Pixelcopter(PyGameWrapper):
 
         self.is_climbing = False
         self.speed = 0.0004 * width
-        
+        self.rewards = {
+            "positive": 1.0,  # For example, passing an obstacle
+            "negative": -2.0, # Hitting an obstacle
+            "tick": 0.1,      # Living for another frame
+            "loss": 0.0,     # Losing the game
+            "win": 0.0        # Winning the game, if there's a win condition
+        }
 
     def _handle_player_events(self):
         self.is_climbing = False
