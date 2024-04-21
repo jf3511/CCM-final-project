@@ -86,7 +86,8 @@ class HelicopterPlayer(pygame.sprite.Sprite):
 
 class Terrain(pygame.sprite.Sprite):
 
-    def __init__(self, pos_init, speed, SCREEN_WIDTH, SCREEN_HEIGHT):
+    def __init__(self, pos_init, speed, SCREEN_WIDTH, SCREEN_HEIGHT
+                 ):
         pygame.sprite.Sprite.__init__(self)
 
         self.pos = vec2d(pos_init)
@@ -103,7 +104,7 @@ class Terrain(pygame.sprite.Sprite):
         pygame.draw.rect(
             image,
             color,
-            (0, 0, self.width, SCREEN_HEIGHT * 0.5),
+            (0, 0, self.width, SCREEN_HEIGHT * 0.5 ),
             0
         )
 
@@ -160,8 +161,8 @@ class Pixelcopter(PyGameWrapper):
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 self.is_climbing = True
                 self.space_key_presses += 1  # Increment counter on space key press
-                if self.space_key_presses == 30:  # Check if pressed 30 times
-                    self.increase_speed(2)  # Increase the speed by 1.5
+                if self.space_key_presses == 50:  # Check if pressed 30 times
+                    self.increase_speed(1.5)  # Increase the speed by 1.2
             if event.type == pygame.KEYUP and event.key == pygame.K_SPACE:
                 self.is_climbing = False
     
@@ -333,7 +334,8 @@ class Pixelcopter(PyGameWrapper):
 
         if len(self.terrain_group) <= (
                 10 + 3):  # 10% per terrain, offset of ~2 with 1 extra
-            self._add_terrain(self.width, self.width * 5)
+            self._add_terrain(self.width, self.width * 5
+                              )
 
         if self.lives <= 0.0:
             self.score += self.rewards["loss"]

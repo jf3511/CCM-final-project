@@ -1,6 +1,6 @@
 import pygame
 from ple import PLE
-from ple.games.reverse_updown_pixelcopter_copy import Pixelcopter
+from ple.games.reverse_updown_pixelcopter_human import Pixelcopter
 
 # Initialize Pygame and set up the window
 pygame.init()

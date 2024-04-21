@@ -284,17 +284,10 @@ class Pixelcopter(PyGameWrapper):
 
         hits = pygame.sprite.spritecollide(
             self.player, self.block_group, False)
-        for creep in hits:
-            self.lives -= 1
-
-        hits = pygame.sprite.spritecollide(
-            self.player, self.terrain_group, False)
-        for t in hits:
-            if self.player.pos.y - self.player.height <= t.pos.y - self.height * 0.25:
-                self.lives -= 1
-
-            if self.player.pos.y >= t.pos.y + self.height * 0.25:
-                self.lives -= 1
+        
+        for block in hits:
+            self.lives -=1
+            self.score -=5
 
         for b in self.block_group:
             if b.pos.x <= self.player.pos.x and len(self.block_group) == 1:
@@ -303,6 +296,7 @@ class Pixelcopter(PyGameWrapper):
 
             if b.pos.x <= -b.width:
                 b.kill()
+
         for t in self.terrain_group:
             if t.pos.x <= -t.width:
                 t.kill()
@@ -317,6 +311,11 @@ class Pixelcopter(PyGameWrapper):
                 10 + 3):  # 10% per terrain, offset of ~2 with 1 extra
             self._add_terrain(self.width, self.width * 5)
 
+        if self.lives <= 0.0:
+
+            final_score_text = self.font.render(f'Final Score: {self.score}', True, (255, 255, 255))
+            text_rect = final_score_text.get_rect(center=(self.width//2, self.height//2))
+            self.screen.blit(final_score_text, text_rect)
 
         self.player_group.draw(self.screen)
         self.block_group.draw(self.screen)
