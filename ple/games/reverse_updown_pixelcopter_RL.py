@@ -142,6 +142,14 @@ class Pixelcopter(PyGameWrapper):
 
         self.is_falling = False
         self.speed = 0.0004 * width
+
+        self.rewards = {
+            "positive": 1.0,  # For example, passing an obstacle
+            "negative": -5.0, # Hitting an obstacle
+            "tick": 0.0,      # Living for another frame
+            "loss": -0.0,     # Losing the game
+            "win": 0.0        # Winning the game, if there's a win condition
+        }
         
 
     def _handle_player_events(self):
