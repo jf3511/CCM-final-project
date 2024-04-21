@@ -1,5 +1,6 @@
 import pygame
 import os
+import time
 from ple import PLE
 from ple.games.pixelcopter import Pixelcopter
 
