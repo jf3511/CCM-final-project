@@ -28,6 +28,7 @@ import time
 from collections import deque
 import h5py
 
+
 import keras
 import matplotlib.pyplot as plt
 import numpy as np
@@ -41,7 +42,7 @@ from keras.layers import Dense, Dropout, BatchNormalization
 from keras.optimizers import Adam
 from keras import initializers
 from ple import PLE
-from ple.games.pixelcopter import Pixelcopter
+from ple.games.speed_boost_human import Pixelcopter
 
 
 print(f"Tensor Flow Version: {tf.__version__}")
@@ -129,7 +130,7 @@ class DQNAgent:
         self.MODEL_NAME = f"model - ({lr} {minibatch} {memory_size} {nodes} {final_act} {num_episodes})"
         self.MODEL_FILE = "dqn/best/model - (0.01 64 10000 49 linear 10000___111.11max___23.35avg___-3.82min.h5"
         # main model  # gets trained every step
-        self.model = self.create_model(False)
+        self.model = self.create_model()
         print(self.model.summary())
         print("Finished building baseline model..")
         self.action_map = {
@@ -137,7 +138,7 @@ class DQNAgent:
             1: 119
         }
         # Target model this is what we predict against every step
-        self.target_model = self.create_model(False)
+        self.target_model = self.create_model()
         print("Finished building target model..")
         self.target_model.set_weights(self.model.get_weights())
         self.replay_memory = deque(maxlen=self.MEMORY_SIZE)
@@ -146,29 +147,19 @@ class DQNAgent:
         self.target_update_counter = 0
         self.rewards = []
 
-    def create_model(self, model_file):
-        if model_file:
-            print("Loading model...")
-            model = keras.models.load_model(model_file)
-            self.EPSILON = 0
-        else:
-            model = Sequential()
+    def create_model(self):
+        model = Sequential()
 
-            model.add(Dense(
-                14,
-                input_shape=(self.INPUT_SIZE,),
-                activation="relu"
-            ))
+        model.add(Dense(32, input_shape=(self.INPUT_SIZE,), activation="relu"))
 
-            model.add(Dense(self.HIDDEN_NODES, activation="relu"))
-            # model.add(Dropout(0.1))
+        model.add(Dense(64, activation="relu"))
+        model.add(Dropout(0.2))
 
-            model.add(Dense(self.OUTPUT_SIZE, activation=self.FINAL_ACTIVATION))  # ACTION_SPACE_SIZE = how many choices (9)
-            model.compile(
-                loss="mse",
-                optimizer=Adam(lr=self.LEARNING_RATE),
-                metrics=['mae']
-            )
+        model.add(Dense(64, activation="relu"))
+        model.add(Dropout(0.2))
+
+        model.add(Dense(self.OUTPUT_SIZE, activation='linear'))  # ACTION_SPACE_SIZE = how many choices (9)
+        model.compile(loss="mse", optimizer=Adam(lr=self.LEARNING_RATE), metrics=['accuracy'])
         return model
 
     def update_replay_memory(self, state, action, reward, new_state, done):
@@ -180,7 +171,7 @@ class DQNAgent:
         # chose random action with probability epsilon
         if np.random.uniform() < self.EPSILON:
             # to speed up training give higher probability to action 0 (no jump)
-            action_index = np.random.choice([0, 1], size=1, p=[0.8, 0.2])[0]
+            action_index = np.random.choice([0, 1], size=1, p=[0.9, 0.1])[0]
             # action_index = np.random.randint(self.OUTPUT_SIZE)
         else:
             # otherwise chose epsilon-greedy action from neural net
