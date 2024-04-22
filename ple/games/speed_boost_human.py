@@ -166,8 +166,7 @@ class Pixelcopter(PyGameWrapper):
                 self.space_key_presses += 1  # Increment counter on space key press
                 if self.space_key_presses == 50:  # Check if pressed 30 times
                     self.increase_speed(1.5)  # Increase the speed by 1.2
-            if event.type == pygame.KEYUP and event.key == pygame.K_SPACE:
-                self.is_climbing = False
+
     
     def increase_speed(self, factor):
         """Increase the speed of all moving entities by a given factor."""
