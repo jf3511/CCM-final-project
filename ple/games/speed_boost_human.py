@@ -54,7 +54,7 @@ class HelicopterPlayer(pygame.sprite.Sprite):
         pos_init = (int(SCREEN_WIDTH * 0.35), SCREEN_HEIGHT / 2)
         self.pos = vec2d(pos_init)
         self.speed = speed
-        self.climb_speed = speed * -0.35  # -0.0175
+        self.climb_speed = speed * -0.30  # -0.0175
         self.fall_speed = speed * 0.09  # 0.0019
         self.momentum = 0
 
@@ -166,8 +166,7 @@ class Pixelcopter(PyGameWrapper):
                 self.space_key_presses += 1  # Increment counter on space key press
                 if self.space_key_presses == 50:  # Check if pressed 30 times
                     self.increase_speed(1.5)  # Increase the speed by 1.2
-            if event.type == pygame.KEYUP and event.key == pygame.K_SPACE:
-                self.is_climbing = False
+
     
     def increase_speed(self, factor):
         """Increase the speed of all moving entities by a given factor."""
