@@ -17,9 +17,6 @@
 #get_ipython().system('pip install -q keras')
 
 
-import shutil
-
-#shutil.rmtree('models_reverse')
 # # Imports
 
 import datetime
@@ -44,7 +41,7 @@ from keras.layers import Dense, Dropout, BatchNormalization
 from keras.optimizers import Adam
 from keras import initializers
 from ple import PLE
-from ple.games.reverse_updown_pixelcopter_RL import Pixelcopter
+from ple.games.pixelcopter import Pixelcopter
 
 
 print(f"Tensor Flow Version: {tf.__version__}")
@@ -399,5 +396,3 @@ def play():
 if __name__ == "__main__":
     play()
     # learn(nodes=49, num_episodes=5000, lr=1e-2)
-
-

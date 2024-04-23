@@ -52,8 +52,8 @@ class HelicopterPlayer(pygame.sprite.Sprite):
         pos_init = (int(SCREEN_WIDTH * 0.35), SCREEN_HEIGHT / 2)
         self.pos = vec2d(pos_init)
         self.speed = speed
-        self.climb_speed = speed * -0.09  # -0.0175
-        self.fall_speed = speed * 0.35  # 0.0019
+        self.climb_speed = speed*-0.0175  # -0.0175
+        self.fall_speed = speed*0.0019  # 0.0019
         self.momentum = 0
 
         self.width = SCREEN_WIDTH * 0.05
@@ -135,7 +135,7 @@ class Pixelcopter(PyGameWrapper):
     """
 
     def __init__(self, width=48, height=48):
-        actions = {'up': pygame.K_SPACE}
+        actions = {'down': pygame.K_SPACE}
         super().__init__(width, height, actions=actions)
 
         PyGameWrapper.__init__(self, width, height, actions=actions)
