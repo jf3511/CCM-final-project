@@ -137,13 +137,16 @@ class DQNAgent:
             0: None,
             1: 119
         }
+
+        log_dir_path = f"logs/{self.MODEL_NAME}-{int(time.time())}"
+        if not os.path.exists(log_dir_path):
+            os.makedirs(log_dir_path)
         # Target model this is what we predict against every step
         self.target_model = self.create_model()
         print("Finished building target model..")
         self.target_model.set_weights(self.model.get_weights())
         self.replay_memory = deque(maxlen=self.MEMORY_SIZE)
-        self.tensorboard = ModifiedTensorBoard(
-            log_dir=f"logs/{self.MODEL_NAME}-{int(time.time())}") if mode == "train" else None
+        self.tensorboard = ModifiedTensorBoard(log_dir=log_dir_path) if mode == "train" else None
         self.target_update_counter = 0
         self.rewards = []
 
@@ -171,7 +174,7 @@ class DQNAgent:
         # chose random action with probability epsilon
         if np.random.uniform() < self.EPSILON:
             # to speed up training give higher probability to action 0 (no jump)
-            action_index = np.random.choice([0, 1], size=1, p=[0.9, 0.1])[0]
+            action_index = np.random.choice([0, 1], size=1, p=[0.8, 0.2])[0]
             # action_index = np.random.randint(self.OUTPUT_SIZE)
         else:
             # otherwise chose epsilon-greedy action from neural net
