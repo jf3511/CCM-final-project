@@ -386,10 +386,10 @@ def play():
         new_state = np.array(list(env.getGameState().values()))
 
         # PRINT CURRENT STATS
-        # print("Current State:", state)
-        # print("Action:", action, action_string)
-        # print("Reward:", reward)
-        # print("New State:", new_state)
+        print("Current State:", state)
+        print("Action:", action, action_index)
+        print("Reward:", reward)
+        print("New State:", new_state)
 
         state = new_state
         step += 1
