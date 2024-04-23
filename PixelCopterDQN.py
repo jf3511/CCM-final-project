@@ -7,14 +7,14 @@
 
 
 # ONLY NEED TO RUN ONCE
-# import os
-# get_ipython().system('git clone https://github.com/ntasfi/PyGame-Learning-Environment/')
-# os.chdir("PyGame-Learning-Environment")
-# print(f"Current directory {os.getcwd()}")
-# get_ipython().system('pip install -e .')
-# get_ipython().system('pip install pygame')
-# get_ipython().system('pip install -q tensorflow')
-# get_ipython().system('pip install -q keras')
+#import os
+#get_ipython().system('git clone https://github.com/ntasfi/PyGame-Learning-Environment/')
+#os.chdir("PyGame-Learning-Environment")
+#print(f"Current directory {os.getcwd()}")
+#get_ipython().system('pip install -e .')
+#get_ipython().system('pip install pygame')
+#get_ipython().system('pip install -q tensorflow')
+#get_ipython().system('pip install -q keras')
 
 
 # # Imports
@@ -26,7 +26,7 @@ import random
 import sys
 import time
 from collections import deque
-import h5py
+#import h5py
 
 import keras
 import matplotlib.pyplot as plt
@@ -41,7 +41,7 @@ from keras.layers import Dense, Dropout, BatchNormalization
 from keras.optimizers import Adam
 from keras import initializers
 from ple import PLE
-from ple.games.pixelcopter import Pixelcopter
+from ple.games.reverse_updown_pixelcopter_RL import Pixelcopter
 
 
 print(f"Tensor Flow Version: {tf.__version__}")
