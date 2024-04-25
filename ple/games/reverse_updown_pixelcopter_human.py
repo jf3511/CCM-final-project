@@ -53,7 +53,7 @@ class HelicopterPlayer(pygame.sprite.Sprite):
         self.pos = vec2d(pos_init)
         self.speed = speed
         self.climb_speed = speed * -0.09  # -0.0175
-        self.fall_speed = speed * 0.30 # 0.0019
+        self.fall_speed = speed * 0.875 # 0.0019
         self.momentum = 0
 
         self.width = SCREEN_WIDTH * 0.05
