@@ -42,7 +42,7 @@ from keras.layers import Dense, Dropout, BatchNormalization
 from keras.optimizers import Adam
 from keras import initializers
 from ple import PLE
-from ple.games.speed_boost_human import Pixelcopter
+from ple.games.pixelcopter import Pixelcopter
 
 
 print(f"Tensor Flow Version: {tf.__version__}")
