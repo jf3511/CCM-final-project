@@ -36,7 +36,7 @@ from keras.layers import Dense, Dropout, Activation
 from keras.optimizers import Adam
 from keras import initializers
 from ple import PLE
-from ple.games.speed_boost_human import Pixelcopter
+from ple.games.time_change import Pixelcopter
 from matplotlib import pyplot as plt
 
 print(f"Tensor Flow Version: {tf.__version__}")
@@ -167,6 +167,7 @@ class DDQNAgent:
         self.MODEL_FILE = "ddqn/best/model - (0.01 64 10000 49 linear 10000)___116.46max____5.67avg___-3.84min_model.h5"
         # Set to LOAD_MODEL to NONE to train from scratch
 
+    
         self.model = self.create_model(self.MODEL_FILE)
         print(self.model.summary())
         self.action_map = {

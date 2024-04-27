@@ -1,6 +1,6 @@
 import math
 import sys
-import numpy as np
+
 #import .base
 from .base.pygamewrapper import PyGameWrapper
 
@@ -37,8 +37,6 @@ class Block(pygame.sprite.Sprite):
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.center = pos_init
-    def increase_speed(self, factor):
-        self.speed *= factor
 
     def update(self, dt):
         self.pos.x -= self.speed * dt
@@ -54,7 +52,7 @@ class HelicopterPlayer(pygame.sprite.Sprite):
         pos_init = (int(SCREEN_WIDTH * 0.35), SCREEN_HEIGHT / 2)
         self.pos = vec2d(pos_init)
         self.speed = speed
-        self.climb_speed = speed *-0.875# -0.0175
+        self.climb_speed = speed *-0.875 # -0.0175
         self.fall_speed = speed * 0.09 # 0.0019
         self.momentum = 0
 
@@ -86,8 +84,7 @@ class HelicopterPlayer(pygame.sprite.Sprite):
 
 class Terrain(pygame.sprite.Sprite):
 
-    def __init__(self, pos_init, speed, SCREEN_WIDTH, SCREEN_HEIGHT
-                 ):
+    def __init__(self, pos_init, speed, SCREEN_WIDTH, SCREEN_HEIGHT):
         pygame.sprite.Sprite.__init__(self)
 
         self.pos = vec2d(pos_init)
@@ -104,7 +101,7 @@ class Terrain(pygame.sprite.Sprite):
         pygame.draw.rect(
             image,
             color,
-            (0, 0, self.width, SCREEN_HEIGHT * 0.5 ),
+            (0, 0, self.width, SCREEN_HEIGHT * 0.5),
             0
         )
 
@@ -119,8 +116,7 @@ class Terrain(pygame.sprite.Sprite):
         self.image = image
         self.rect = self.image.get_rect()
         self.rect.center = pos_init
-    def increase_speed(self, factor):
-        self.speed *= factor
+
     def update(self, dt):
         self.pos.x -= self.speed * dt
         self.rect.center = (self.pos.x, self.pos.y)
@@ -149,9 +145,6 @@ class Pixelcopter(PyGameWrapper):
         self.speed = 0.0004 * width
         pygame.font.init()
         self.font = pygame.font.SysFont('Arial', 24)
-        self.space_key_presses = 0
-
-
 
     def _handle_player_events(self):
         self.is_climbing = False
@@ -161,20 +154,10 @@ class Pixelcopter(PyGameWrapper):
                 pygame.quit()
                 sys.exit()
 
-            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                self.is_climbing = True
-                self.space_key_presses += 1  # Increment counter on space key press
-                if self.space_key_presses == 300:  # Check if pressed 30 times
-                    self.increase_speed(1.2)  # Increase the speed by 1.2
-
-    
-    def increase_speed(self, factor):
-        """Increase the speed of all moving entities by a given factor."""
-        self.speed *= factor
-        for block in self.block_group:
-            block.increase_speed(factor)
-        for terrain in self.terrain_group:
-            terrain.increase_speed(factor)
+            if event.type == pygame.KEYDOWN:
+                key = event.key
+                if key == self.actions['up']:
+                    self.is_climbing = True
 
     def getGameState(self):
         """
