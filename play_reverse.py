@@ -1,10 +1,14 @@
 import pygame
+import os
+import time
 from ple import PLE
 from ple.games.reverse_updown_pixelcopter_human import Pixelcopter
 
 # Initialize Pygame and set up the window
 pygame.init()
 pygame.display.set_caption("Pixelcopter Game")
+
+os.environ['SDL_VIDEO_WINDOW_POS']  = '200, 100' 
 
 # Create the game and pass it to the PLE environment
 game = Pixelcopter(width=500, height=500)  # Adjusted dimensions for better visibility
@@ -34,4 +38,6 @@ while not p.game_over():
     # Delay to control the game speed
     pygame.time.wait(33)  # Approx. 30 frames per second
 
+time.sleep(2)    
+    
 pygame.quit()
