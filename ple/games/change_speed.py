@@ -7,7 +7,7 @@ from .base.pygamewrapper import PyGameWrapper
 import pygame
 from pygame.constants import K_w, K_s
 from .utils.vec2d import vec2d
-import numpy as np
+
 
 class Block(pygame.sprite.Sprite):
 
@@ -18,7 +18,7 @@ class Block(pygame.sprite.Sprite):
 
         self.width = int(SCREEN_WIDTH * 0.1)
         self.height = int(SCREEN_HEIGHT * 0.2)
-        self.speed = speed
+        self.speed = speed *1.5
 
         self.SCREEN_WIDTH = SCREEN_WIDTH
         self.SCREEN_HEIGHT = SCREEN_HEIGHT
@@ -52,8 +52,8 @@ class HelicopterPlayer(pygame.sprite.Sprite):
         pos_init = (int(SCREEN_WIDTH * 0.35), SCREEN_HEIGHT / 2)
         self.pos = vec2d(pos_init)
         self.speed = speed
-        self.climb_speed = speed * -0.0175 # -0.0175
-        self.fall_speed = speed * 0.0019 # 0.0019
+        self.climb_speed = speed *-0.875 # -0.0175
+        self.fall_speed = speed * 0.09 # 0.0019
         self.momentum = 0
 
         self.width = SCREEN_WIDTH * 0.05
@@ -74,8 +74,8 @@ class HelicopterPlayer(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = pos_init
 
-    def update(self, is_falling, dt):
-        self.momentum += (self.fall_speed if is_falling else self.climb_speed) * dt
+    def update(self, is_climbing, dt):
+        self.momentum += (self.climb_speed if is_climbing else self.fall_speed) * dt
         self.momentum *= 0.99
         self.pos.y += self.momentum
 
@@ -88,7 +88,7 @@ class Terrain(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
 
         self.pos = vec2d(pos_init)
-        self.speed = speed
+        self.speed = speed *1.5
         self.width = int(SCREEN_WIDTH * 0.1)
 
         image = pygame.Surface((self.width, SCREEN_HEIGHT * 1.5))
@@ -135,27 +135,29 @@ class Pixelcopter(PyGameWrapper):
     """
 
     def __init__(self, width=48, height=48):
-        super().__init__(width, height, actions={'up': pygame.K_SPACE})
+        actions = {
+            "up": K_w
+        }
+
+        PyGameWrapper.__init__(self, width, height, actions=actions)
+
+        self.is_climbing = False
         self.speed = 0.0004 * width
-        self.rng = np.random.RandomState(24)  # Initialize the random number generator
-        self.player = HelicopterPlayer(self.speed, width, height)
-        self.is_falling = False
         pygame.font.init()
         self.font = pygame.font.SysFont('Arial', 24)
-        self.init()
 
     def _handle_player_events(self):
-        self.is_falling = False
+        self.is_climbing = False
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE:
-                    self.is_falling = True
-            elif event.type is pygame.KEYUP:
-                if event.key == pygame.K_SPACE:
-                    self.is_falling = False
+
+            if event.type == pygame.KEYDOWN:
+                key = event.key
+                if key == self.actions['up']:
+                    self.is_climbing = True
 
     def getGameState(self):
         """
@@ -271,7 +273,6 @@ class Pixelcopter(PyGameWrapper):
     def reset(self):
         self.init()
 
-
     def step(self, dt):
 
         self.screen.fill((0, 0, 0))
@@ -279,7 +280,7 @@ class Pixelcopter(PyGameWrapper):
 
         self.score += self.rewards["tick"]
 
-        self.player.update(self.is_falling, dt)
+        self.player.update(self.is_climbing, dt)
         self.block_group.update(dt)
         self.terrain_group.update(dt)
 
@@ -329,13 +330,9 @@ class Pixelcopter(PyGameWrapper):
             text_rect = final_score_text.get_rect(center=(self.width//2, self.height//2))
             self.screen.blit(final_score_text, text_rect)
 
-
         self.player_group.draw(self.screen)
         self.block_group.draw(self.screen)
         self.terrain_group.draw(self.screen)
-        
-        pygame.display.flip()
-
 
 if __name__ == "__main__":
     import numpy as np

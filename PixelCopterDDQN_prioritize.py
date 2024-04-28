@@ -36,7 +36,7 @@ from keras.layers import Dense, Dropout, Activation
 from keras.optimizers import Adam
 from keras import initializers
 from ple import PLE
-from ple.games.reverse_updown_pixelcopter_human import Pixelcopter
+from ple.games.pixelcopter import Pixelcopter
 from matplotlib import pyplot as plt
 
 print(f"Tensor Flow Version: {tf.__version__}")
@@ -157,25 +157,24 @@ class DDQNAgent:
         # depending on what mode the agent is in, will determine how the agent chooses actions
         # if agent is training, EPSILON = 1 and will decay over time with epsilon probability of exploring
         # if agent is playing (using trained model), EPSILON = 0 and only choose actions based on Q network
-        self.DECAY_RATE = 5 / num_episodes
+        self.DECAY_RATE = 5/num_episodes
         self.HIDDEN_NODES = nodes
         self.MEMORY_SIZE = memory_size
         self.FINAL_ACTIVATION = final_act
         self.MINIBATCH_SIZE = minibatch
         self.LEARNING_RATE = lr
         self.MODEL_NAME = f"model - ({lr} {minibatch} {memory_size} {nodes} {final_act} {num_episodes})"
-        self.MODEL_FILE = "ddqn/best/model - (0.01 64 10000 49 linear 10000)___116.46max____5.67avg___-3.84min_model.h5"
+        self.LOAD_MODEL = "per/best/model - (0.01 64 10000 49 linear 10000)__126.08max___24.55 avg___-1.69min.h5"
         # Set to LOAD_MODEL to NONE to train from scratch
 
-    
-        self.model = self.create_model(self.MODEL_FILE)
+        self.model = self.create_model(self.LOAD_MODEL)
         print(self.model.summary())
         self.action_map = {
             0: None,
             1: 119
         }
         # Target model this is what we .predict against every step
-        self.target_model = self.create_model(self.MODEL_FILE)
+        self.target_model = self.create_model(self.LOAD_MODEL)
         print("Finished building target model..")
         self.target_model.set_weights(self.model.get_weights())
 
@@ -391,6 +390,30 @@ def plot_graph(episode_rewards, num_episodes, nodes, memory_size, final_act, min
     return True
 
 
+# run the game using best DQN model
+def play():
+    game = Pixelcopter(width=250, height=250)
+    env = PLE(game, fps=30, display_screen=True)
+    env.init()
+    agent = DDQNAgent("play")
+    step = 0
+    total_reward = 0
+    state = np.array(list(env.getGameState().values()))
+    while True:
+        if env.game_over():
+            print("===========================")
+            print("TOTAL REWARD: ", total_reward)
+            step = 0
+            total_reward = 0
+            env.reset_game()
+
+        action_index, action = agent.select_action(state)
+        # action_string = 'jump!' if action_index == 1 else 'chill'
+        reward = env.act(action)
+        new_state = np.array(list(env.getGameState().values()))
+        state = new_state
+        step += 1
+        total_reward += reward
 
 
 if __name__ == "__main__":
