@@ -378,4 +378,4 @@ def optimize():
 if __name__ == "__main__":
     # pass in specific params to function, otherwise uses default ones
     # main(num_episodes=5000, nodes=49, minibatch=32, lr=1e-2)
-    play()
+    main()
