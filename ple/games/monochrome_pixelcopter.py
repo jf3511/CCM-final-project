@@ -319,13 +319,17 @@ class Pixelcopter(PyGameWrapper):
                 10 + 3):  # 10% per terrain, offset of ~2 with 1 extra
             self._add_terrain(self.width, self.width * 5)
             
+        if self.lives <= 0.0:
+            self.score += self.rewards["loss"]
+            
         self.player_group.draw(self.screen)
         self.block_group.draw(self.screen)
         self.terrain_group.draw(self.screen)
         
         if self.lives <= 0.0:
-            self.score += self.rewards["loss"]
-
+            final_score_text = self.font.render(f'Final Score: {self.score}', True, (255, 255, 255))
+            text_rect = final_score_text.get_rect(center=(self.width//2, self.height//2))
+            self.screen.blit(final_score_text, text_rect)
 
 
 if __name__ == "__main__":
