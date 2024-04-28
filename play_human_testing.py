@@ -1,12 +1,15 @@
 import pygame
 from ple import PLE
 from ple.games.pixelcopter import Pixelcopter
+import os
 import time
 import sys
 
 # Initialize Pygame and set up the window
 pygame.init()
 pygame.display.set_caption("Pixelcopter Game")
+
+os.environ['SDL_VIDEO_WINDOW_POS']  = '200, 100'
 
 # Create the game and pass it to the PLE environment
 game = Pixelcopter(width=500, height=500)  # Adjusted dimensions for better visibility
