@@ -318,13 +318,15 @@ class Pixelcopter(PyGameWrapper):
         if len(self.terrain_group) <= (
                 10 + 3):  # 10% per terrain, offset of ~2 with 1 extra
             self._add_terrain(self.width, self.width * 5)
-
-        if self.lives <= 0.0:
-            self.score += self.rewards["loss"]
-
+            
         self.player_group.draw(self.screen)
         self.block_group.draw(self.screen)
         self.terrain_group.draw(self.screen)
+        
+        if self.lives <= 0.0:
+            self.score += self.rewards["loss"]
+
+
 
 if __name__ == "__main__":
     import numpy as np
