@@ -1,6 +1,6 @@
 import pygame
 from ple import PLE
-from ple.games.time_change import Pixelcopter
+from ple.games.change_speed import Pixelcopter
 
 # Initialize Pygame and set up the window
 pygame.init()
