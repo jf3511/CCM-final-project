@@ -330,7 +330,7 @@ class Pixelcopter(PyGameWrapper):
         
         if self.lives <= 0.0:
 
-            final_score_text = self.font.render(f'Final Score: {self.score}', True, (255, 255, 255))
+            final_score_text = self.font.render(f'Final Score: {self.score}', True, (255, 255, 0))
             text_rect = final_score_text.get_rect(center=(self.width//2, self.height//2))
             self.screen.blit(final_score_text, text_rect)
 
