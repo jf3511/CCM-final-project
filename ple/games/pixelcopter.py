@@ -158,6 +158,9 @@ class Pixelcopter(PyGameWrapper):
                 key = event.key
                 if key == self.actions['up']:
                     self.is_climbing = True
+                    
+                elif key == pygame.K_SPACE and self.game_over():
+                    main()
 
     def getGameState(self):
         """
@@ -330,15 +333,15 @@ class Pixelcopter(PyGameWrapper):
         
         if self.lives <= 0.0:
 
-            final_score_text = self.font.render(f'Final Score: {self.score}', True, (255, 255, 255))
+            final_score_text = self.font.render(f'Final Score: {self.score}', True, (255, 255, 0))
             text_rect = final_score_text.get_rect(center=(self.width//2, self.height//2))
             self.screen.blit(final_score_text, text_rect)
 
 
-
+            
 if __name__ == "__main__":
     import numpy as np
-
+    
     pygame.init()
     game = Pixelcopter(width=256, height=256)
     game.screen = pygame.display.set_mode(game.getScreenDims(), 0, 32)
