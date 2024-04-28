@@ -143,6 +143,8 @@ class Pixelcopter(PyGameWrapper):
 
         self.is_climbing = False
         self.speed = 0.0004 * width
+        pygame.font.init()
+        self.font = pygame.font.SysFont('Arial', 24)
 
     def _handle_player_events(self):
         self.is_climbing = False
