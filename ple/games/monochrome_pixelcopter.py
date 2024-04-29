@@ -29,7 +29,7 @@ class Block(pygame.sprite.Sprite):
 
         pygame.draw.rect(
             image,
-            (128, 128, 128),
+            (27, 18, 18),
             (0, 0, self.width, self.height),
             0
         )
@@ -65,7 +65,7 @@ class HelicopterPlayer(pygame.sprite.Sprite):
 
         pygame.draw.rect(
             image,
-            (128, 128, 128),
+            (27, 18, 18),
             (0, 0, self.width, self.height),
             0
         )
@@ -95,8 +95,7 @@ class Terrain(pygame.sprite.Sprite):
         image.fill((0, 0, 0, 0))
         image.set_colorkey((0, 0, 0))
 
-        color = (128, 128,128)
-
+        color = (27, 18,18)
         # top rect
         pygame.draw.rect(
             image,
@@ -143,8 +142,6 @@ class Pixelcopter(PyGameWrapper):
 
         self.is_climbing = False
         self.speed = 0.0004 * width
-        pygame.font.init()
-        self.font = pygame.font.SysFont('Arial', 24)
 
     def _handle_player_events(self):
         self.is_climbing = False
@@ -320,19 +317,13 @@ class Pixelcopter(PyGameWrapper):
         if len(self.terrain_group) <= (
                 10 + 3):  # 10% per terrain, offset of ~2 with 1 extra
             self._add_terrain(self.width, self.width * 5)
-            
+
         if self.lives <= 0.0:
             self.score += self.rewards["loss"]
-            
+
         self.player_group.draw(self.screen)
         self.block_group.draw(self.screen)
         self.terrain_group.draw(self.screen)
-        
-        if self.lives <= 0.0:
-            final_score_text = self.font.render(f'Final Score: {self.score}', True, (255, 255, 0))
-            text_rect = final_score_text.get_rect(center=(self.width//2, self.height//2))
-            self.screen.blit(final_score_text, text_rect)
-
 
 if __name__ == "__main__":
     import numpy as np
