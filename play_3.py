@@ -1,8 +1,7 @@
 import pygame
 from ple import PLE
-from ple.games.pixelcopter import Pixelcopter
+from ple.games.change_speed import Pixelcopter
 import os
-import time
 import sys
 
 # Initialize Pygame and set up the window
@@ -15,9 +14,6 @@ os.environ['SDL_VIDEO_WINDOW_POS']  = '200, 100'
 game = Pixelcopter(width=500, height=500)  # Adjusted dimensions for better visibility
 p = PLE(game, fps=30, display_screen=True)
 p.init()
-
-# Create a display surface
-screen = pygame.display.set_mode(game.getScreenDims())
 
 pygame.init()
 
@@ -60,5 +56,6 @@ while not game_over:
                 elif event.key == pygame.K_q:  # Quit game
                     game_over = True
                     waiting_for_input = False
+
 
 pygame.quit()
